@@ -1,31 +1,52 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { OptionalStuffComponent } from './optional-stuff/optional-stuff.component';
+import { BrowserModule, By } from '@angular/platform-browser';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
+import { DropdownModule } from 'primeng/dropdown';
 
 describe('AppComponent', () => {
+
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        OptionalStuffComponent
+      ],
+      imports: [
+        BrowserModule,
+        NoopAnimationsModule,
+        CommonModule,
+        ReactiveFormsModule,
+        DropdownModule,
+        CheckboxModule
       ],
     }).compileComponents();
   }));
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'primeng-bug'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('primeng-bug');
-  });
-
-  it('should render title in a h1 tag', () => {
+  it('should show and hide OptionalStuffComponent when selecting/deselecting checkbox', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to primeng-bug!');
+
+    const app = fixture.debugElement.componentInstance as AppComponent;
+
+    app.optionalStuffEnabledControl.setValue(false);
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.directive(OptionalStuffComponent)))
+    .toBeFalsy('should hide OptionalStuffComponent when disabling for the first time');
+
+    app.optionalStuffEnabledControl.setValue(true);
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.directive(OptionalStuffComponent)))
+    .toBeFalsy('should show OptionalStuffComponent when re-enabling');
+
+    app.optionalStuffEnabledControl.setValue(false);
+    fixture.detectChanges();
+    expect(fixture.debugElement.query(By.directive(OptionalStuffComponent)))
+    .toBeFalsy('should hide OptionalStuffComponent when disabling again');
   });
 });
