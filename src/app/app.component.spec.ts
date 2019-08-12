@@ -42,7 +42,7 @@ describe('AppComponent', () => {
     app.optionalStuffEnabledControl.setValue(true);
     fixture.detectChanges();
     expect(fixture.debugElement.query(By.directive(OptionalStuffComponent)))
-    .toBeFalsy('should show OptionalStuffComponent when re-enabling');
+    .toBeTruthy('should show OptionalStuffComponent when re-enabling');
 
     app.optionalStuffEnabledControl.setValue(false);
     fixture.detectChanges();
